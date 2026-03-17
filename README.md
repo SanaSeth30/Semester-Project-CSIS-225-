@@ -1,6 +1,8 @@
-# Semester-Project-CSIS-225-
-##Team 4
-##Sana Seth 
-#Sanjuktha Arikatla
-#Patrick Mcfee
-#Lucas Davey
+# Semester Project - CSIS 225
+
+## Team 4
+
+- Sana Seth  
+- Sanjuktha Arikatla  
+- Patrick McFee  
+- Lucas Davey
