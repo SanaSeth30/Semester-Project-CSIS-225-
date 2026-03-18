@@ -1,6 +1,6 @@
 # Semester Project - CSIS 225
 
-## Team 4
+## SSLP
 
 - Sana Seth  
 - Sanjuktha Arikatla  
