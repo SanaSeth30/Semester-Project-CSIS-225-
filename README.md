@@ -1,6 +1,6 @@
 # Semester Project - CSIS 225
 
-## SSLP
+## A PLSS
 
 - Sana Seth  
 - Sanjuktha Arikatla  
