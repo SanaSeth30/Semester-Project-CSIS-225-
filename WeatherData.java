@@ -10,25 +10,31 @@ public interface WeatherData {
     
     /**
      * Retrieves the temperature
+     * 
      * @return An ArrayList of tempatures thoughout the day
      */
-    ArrayList<Double> getTemperature();
+    double getTemperature(int when);
 
     /**
      * Retrieves the type of precipitation
      * @return A string representing the precipitation type.
      */
-    String getPrecipitationType();
+    String getPrecipitationType(int when);
 
     /**
      * Retrieves the wind speed.
      * @return Wind speed in miles per hour.
      */
-    double getWindSpeed();
+    double getWindSpeed(int when);
 
     /**
      * Retrieves the probability of precipitation.
      * @return Percentage chance (0-100).
      */
-    int getPrecipitationProbability();
+    int getPrecipitationProbability(int when);
+
+    /**
+     * populates instance variables with weather data
+     */
+    void populateData();
 }
