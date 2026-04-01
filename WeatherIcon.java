@@ -36,7 +36,9 @@ public class WeatherIcon implements Runnable {
         frame.setPreferredSize(new Dimension(300, 300));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
     }
    
 
