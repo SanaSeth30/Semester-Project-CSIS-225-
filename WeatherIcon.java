@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -10,7 +12,7 @@ import javax.swing.JPanel;
  * @version Spring 2026
  */
 
-public class WeatherIcon {
+public class WeatherIcon implements Runnable {
     private JPanel panel;
     private String weatherCondition;
 
@@ -27,6 +29,15 @@ public class WeatherIcon {
         this.weatherCondition = condition;
     }
 
+    @Override
+    public void run(){
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JFrame frame = new JFrame("Weather: " + weatherCondition);
+        frame.setPreferredSize(new Dimension(300, 300));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+    }
    
 
 }
