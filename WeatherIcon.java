@@ -40,6 +40,35 @@ public class WeatherIcon implements Runnable {
         frame.pack();
         frame.setVisible(true);
     }
+
+
+    private void sunnyDay(){
+
+    }
+
+    private void partlyCloudy(){
+
+    }
+
+    private void cloudyDay(){
+
+    }
+
+    private void rainyDay(){
+
+    }
+
+    private void thunderstorm(){
+
+    }
+
+    private void windyDay(){
+
+    }
+
+    public static void main(String args[]){
+        
+    }
    
 
 }
