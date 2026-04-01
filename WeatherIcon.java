@@ -23,7 +23,9 @@ public class WeatherIcon {
     private final Color RAIN_BLUE = new Color(80,140,200);
     private final Color LIGHTNING_BOLT = new Color(255,240,60);
 
-
+    public WeatherIcon(String condition){
+        this.weatherCondition = condition;
+    }
 
    
 
