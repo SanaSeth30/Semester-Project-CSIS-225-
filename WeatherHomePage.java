@@ -1,3 +1,5 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * This program will display the weather home page
@@ -9,6 +11,12 @@
  */
 
 public class WeatherHomePage {
-    
+    //this will be the main Window of the program
+     frame = new JFrame("A Home Page");
+     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+     frame.setSize(600, 600);
+
+
+
 
 }
