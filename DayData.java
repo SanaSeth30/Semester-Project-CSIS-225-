@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Implementation of WeatherData that fetches and stores daily weather metrics.
+ * @author Patrick McFee
+ * @version Spring 2026
  */
 public class DayData implements WeatherData {
     /** The date associated with this data. */
