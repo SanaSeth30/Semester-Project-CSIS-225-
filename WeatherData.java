@@ -61,4 +61,18 @@ public interface WeatherData {
      * @return The humidity percentage (0-100).
      */
     int getHumitity(int when);
+
+    /**
+     * Retrieves the low tempature for the day
+     * 
+     * @return The low tempature for the day
+     */
+
+    double getDailyLowestTemp();
+
+    /**
+     * Retrieves the high tempature for the day
+     * @return the high tempature for the day
+     */
+    double getDailyHighestTemp();
 }

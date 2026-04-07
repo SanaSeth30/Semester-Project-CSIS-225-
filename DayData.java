@@ -124,6 +124,35 @@ public class DayData implements WeatherData {
     }
 
     /**
+     * Retrieves the high tempature for the day
+     * @return the high tempature for the day
+     */
+    public double getDailyHighestTemp(){
+        double high = hourlyTemps.get(0);
+        for(int i=1;i<24;i++){
+            if(high<hourlyTemps.get(i)){
+                high = hourlyTemps.get(i);
+            }
+        }
+        return high;
+    }
+
+
+    /**
+     * Retrieves the low tempature for the day
+     * 
+     * @return The low tempature for the day
+     */
+    public double getDailyLowestTemp(){
+        double low = hourlyTemps.get(0);
+        for(int i=1;i<24;i++){
+            if(low>hourlyTemps.get(i)){
+                low = hourlyTemps.get(i);
+            }
+        }
+        return low;
+    }
+    /**
      * Retrieves the temperature at a specific time of day.
      * @param hour The hour of the day.
      * @return The temperature as a double.
