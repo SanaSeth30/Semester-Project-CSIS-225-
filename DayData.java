@@ -50,7 +50,7 @@ public class DayData implements WeatherData {
     @Override
     public void populateData() {
         String apiKey = "JPNyTSLdw7EZQ5nnsWlSgzPLgcSeOIKo";
-        ZonedDateTime start = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        ZonedDateTime start = day.withHour(0).withMinute(0).withSecond(0).withNano(0);
         ZonedDateTime end = start.plusHours(23);
 
         String[] searchKeys = {"temperature", "windSpeed", "precipitationType", "precipitationProbability", "cloudCover", "humidity"};
