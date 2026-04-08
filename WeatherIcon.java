@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 public class WeatherIcon extends JPanel implements Runnable {
 
     private String weatherCondition;
+    private boolean sunRays = true;
 
     //cloud colors
     private final Color CLOUD_WHITE = new Color(230, 230, 240);
@@ -26,6 +27,8 @@ public class WeatherIcon extends JPanel implements Runnable {
     //rain and lightning colors
     private final Color RAIN_BLUE = new Color(80, 140, 200);
     private final Color LIGHTNING_BOLT = new Color(255, 240, 60);
+
+    private static final int DELAY_TIME = 300;
 
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
@@ -41,6 +44,22 @@ public class WeatherIcon extends JPanel implements Runnable {
         frame.add(this);
         frame.pack();
         frame.setVisible(true);
+
+        Thread animation = new Thread() {
+            public void run() {
+                while (true) {
+                    sunRays = !sunRays;
+                    repaint();
+                    try {
+                        Thread.sleep(DELAY_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        animation.start();
+
     }
 
     protected void paintComponent(Graphics g) {
@@ -52,14 +71,50 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     private void sunnyDay(Graphics g) {
         g.setColor(Color.YELLOW);
-        g.fillOval(100, 100, 80, 80);
+        g.fillOval(120, 120, 60, 60);
 
-        g.setColor(Color.ORANGE);
-        g.drawLine(140, 100, 140, 60); //top
-        g.drawLine(180, 140, 220, 140); //right
-        g.drawLine(140, 180, 140, 220); //bottom
-        g.drawLine(100, 140, 60, 140);  //left
+        //creates different color rays every other
+        for (int i = 0; i < 8; i++) {
+            Color rayColor;
+            if ((i % 2 == 0 && sunRays) || (i % 2 != 0 && !sunRays)) {
+                rayColor = Color.YELLOW; //bright yellow
+            } else {
+                rayColor = new Color(255, 220, 0); //slightly dimmer yellow
+            }
+            g.setColor(rayColor);
 
+            if (i == 0) {
+                g.drawLine(150, 120, 150, 90); //top
+
+            }
+            if (i == 1) {
+                g.drawLine(172, 130, 210, 110); //top right
+
+            }
+            if (i == 2) {
+                g.drawLine(180, 150, 220, 150); //right
+
+            }
+            if (i == 3) {
+                g.drawLine(175, 170, 210, 190); //bottom right
+
+            }
+            if (i == 4) {
+                g.drawLine(150, 181, 150, 210); //bottom
+
+            }
+            if (i == 5) {
+                g.drawLine(125, 170, 90, 190); //bottom left
+
+            }
+            if (i == 6) {
+                g.drawLine(120, 150, 80, 150); //left
+
+            }
+            if (i == 7) {
+                g.drawLine(125, 130, 90, 110); //top left
+            }
+        }
     }
 
     private void partlyCloudy() {
