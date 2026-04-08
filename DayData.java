@@ -30,7 +30,7 @@ public class DayData implements WeatherData {
     /** Hourly precipitation probability percentages. */
     private ArrayList<Integer> hourlyPrecipitaitonProbability;
     /** Hourly cloud cover percentages. */
-    private ArrayList<Integer> hourlyCloudCoverPrecentage;
+    private ArrayList<Double> hourlyCloudCoverPrecentage;
     /** Hourly humidity percentages. */
     private ArrayList<Integer> hourlyHumidity;
 
@@ -40,7 +40,7 @@ public class DayData implements WeatherData {
         hourlyTemps = new ArrayList<Double>();
         hourlyWindSpeed = new ArrayList<Double>();
         hourlyPrecipitaitonProbability = new ArrayList<Integer>();
-        hourlyCloudCoverPrecentage = new ArrayList<Integer>();
+        hourlyCloudCoverPrecentage = new ArrayList<Double>();
         hourlyHumidity = new ArrayList<Integer>();
     }
 
@@ -105,7 +105,7 @@ public class DayData implements WeatherData {
                         } else if (i == 3) {
                             hourlyPrecipitaitonProbability.add(Integer.parseInt(tempStr));
                         } else if (i == 4) {
-                            hourlyCloudCoverPrecentage.add(Integer.parseInt(tempStr));
+                            hourlyCloudCoverPrecentage.add(Double.parseDouble(tempStr));
                         } else if (i == 5) {
                             hourlyHumidity.add(Integer.parseInt(tempStr));
                         }
@@ -209,7 +209,7 @@ public class DayData implements WeatherData {
      * @return The cloud cover percentage (0-100).
      */
     @Override
-    public int getCloudCoverPercentage(int hour) {
+    public double getCloudCoverPercentage(int hour) {
         return hourlyCloudCoverPrecentage.get(hour);
     }
 

@@ -52,7 +52,7 @@ public interface WeatherData {
      * @param when The hour of the day.
      * @return The cloud cover percentage (0-100).
      */
-    int getCloudCoverPercentage(int when);
+    double getCloudCoverPercentage(int when);
 
     /**
      * Retrieves the humidity percentage at the specified time.
