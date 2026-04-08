@@ -17,10 +17,6 @@ import java.time.format.DateTimeFormatter;
 public class DayData implements WeatherData {
     /** The date associated with this data. */
     private ZonedDateTime day;
-    /** Properly formatted start time string. */
-    private String Start;
-    /** Properly formatted end time string. */
-    private String end;
     /** Hourly temperature records. */
     private ArrayList<Double> hourlyTemps;
     /** Hourly wind speed records. */
@@ -33,6 +29,8 @@ public class DayData implements WeatherData {
     private ArrayList<Double> hourlyCloudCoverPrecentage;
     /** Hourly humidity percentages. */
     private ArrayList<Integer> hourlyHumidity;
+    /** Coordinates of location */
+    private String coordinates;
 
     public DayData(ZonedDateTime day, String coordinates) {
         this.day = day;
@@ -42,6 +40,7 @@ public class DayData implements WeatherData {
         hourlyPrecipitaitonProbability = new ArrayList<Integer>();
         hourlyCloudCoverPrecentage = new ArrayList<Double>();
         hourlyHumidity = new ArrayList<Integer>();
+        this.coordinates = coordinates;
     }
 
     /**
@@ -60,7 +59,7 @@ public class DayData implements WeatherData {
             String endTime = URLEncoder.encode(end.toInstant().toString(), StandardCharsets.UTF_8);
 
             String urlString = "https://api.tomorrow.io/v4/timelines?"
-                    + "location=43.2994,-74.2179"
+                    + "location="+coordinates
                     + "&fields=temperature,windSpeed,precipitationType,precipitationProbability,cloudCover,humidity"
                     + "&units=imperial"
                     + "&timesteps=1h"
