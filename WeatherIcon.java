@@ -85,34 +85,44 @@ public class WeatherIcon extends JPanel implements Runnable {
 
             if (i == 0) {
                 g.drawLine(150, 120, 150, 90); //top
-
+                g.drawLine(151, 120, 151, 90);
+                g.drawLine(149, 120, 149, 90);
             }
             if (i == 1) {
-                g.drawLine(172, 130, 210, 110); //top right
-
+                g.drawLine(175, 130, 210, 110); //top right
+                g.drawLine(176, 130, 211, 110);
+                g.drawLine(174, 130, 209, 110);
             }
             if (i == 2) {
                 g.drawLine(180, 150, 220, 150); //right
-
+                g.drawLine(180, 151, 220, 151);
+                g.drawLine(180, 149, 220, 149);
             }
             if (i == 3) {
                 g.drawLine(175, 170, 210, 190); //bottom right
-
+                g.drawLine(176, 170, 211, 190);
+                g.drawLine(174, 170, 209, 190);
             }
             if (i == 4) {
-                g.drawLine(150, 181, 150, 210); //bottom
-
+                g.drawLine(150, 180, 150, 210); //bottom
+                g.drawLine(151, 180, 151, 210);
+                g.drawLine(149, 180, 149, 210);
             }
             if (i == 5) {
                 g.drawLine(125, 170, 90, 190); //bottom left
-
+                g.drawLine(126, 170, 91, 190);
+                g.drawLine(124, 170, 89, 190);
             }
             if (i == 6) {
                 g.drawLine(120, 150, 80, 150); //left
+                g.drawLine(120, 151, 80, 151);
+                g.drawLine(120, 149, 80, 149);
 
             }
             if (i == 7) {
-                g.drawLine(125, 130, 90, 110); //top left
+                g.drawLine(124, 130, 90, 110); //top left
+                g.drawLine(125, 130, 91, 110);
+                g.drawLine(123, 130, 89, 110);
             }
         }
     }
