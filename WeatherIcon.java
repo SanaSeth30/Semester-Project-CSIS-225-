@@ -28,7 +28,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     private final Color RAIN_BLUE = new Color(80, 140, 200);
     private final Color LIGHTNING_BOLT = new Color(255, 240, 60);
 
-    private static final int DELAY_TIME = 40;
+    private static final int DELAY_TIME = 70;
 
     //cloud instance variables
     private int moveCloud = 0;
@@ -63,7 +63,6 @@ public class WeatherIcon extends JPanel implements Runnable {
                     try {
                         Thread.sleep(DELAY_TIME);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -80,6 +79,8 @@ public class WeatherIcon extends JPanel implements Runnable {
             sunnyDay(g);
         } else if (condition.equals("partly cloudy")) {
             partlyCloudy(g);
+        } else if (condition.equals("cloudy")) {
+            cloudyDay(g);
         }
 
     }
@@ -187,7 +188,18 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.fillRect(160 + moveCloud, 140, 60, 30);
     }
 
-    private void cloudyDay() {
+    private void cloudyDay(Graphics g) {
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(80 + moveCloud, 120, 70, 45);
+        g.fillOval(120 + moveCloud, 100, 80, 55);
+        g.fillOval(170 + moveCloud, 120, 70, 45);
+        g.fillRect(120 + moveCloud, 130, 80, 35);
+
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(100 - moveCloud, 140, 70, 45);
+        g.fillOval(140 - moveCloud, 120, 80, 55);
+        g.fillOval(190 - moveCloud, 140, 70, 45);
+        g.fillRect(140 - moveCloud, 150, 80, 35);
 
     }
 
@@ -204,7 +216,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("partly cloudy"));
+        SwingUtilities.invokeLater(new WeatherIcon("cloudy"));
 
     }
 
