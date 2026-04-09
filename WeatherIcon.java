@@ -28,7 +28,11 @@ public class WeatherIcon extends JPanel implements Runnable {
     private final Color RAIN_BLUE = new Color(80, 140, 200);
     private final Color LIGHTNING_BOLT = new Color(255, 240, 60);
 
-    private static final int DELAY_TIME = 300;
+    private static final int DELAY_TIME = 40;
+
+    //cloud instance variables
+    private int moveCloud = 0;
+    private int cloudDirection = 1;
 
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
@@ -49,6 +53,12 @@ public class WeatherIcon extends JPanel implements Runnable {
             public void run() {
                 while (true) {
                     sunRays = !sunRays;
+
+                    moveCloud += cloudDirection * 2; //moves cloud right
+                    if (moveCloud > 15 || moveCloud < -40) {
+                        cloudDirection *= -1; //moves cloud back left
+                    }
+
                     repaint();
                     try {
                         Thread.sleep(DELAY_TIME);
@@ -143,7 +153,7 @@ public class WeatherIcon extends JPanel implements Runnable {
 
         g.drawLine(120, 170, 120, 200);
         g.drawLine(119, 170, 119, 200);//bottom
-        g.drawLine(121, 170, 121,200);
+        g.drawLine(121, 170, 121, 200);
 
         g.drawLine(90, 140, 60, 140);
         g.drawLine(90, 139, 60, 139);//left
@@ -171,10 +181,10 @@ public class WeatherIcon extends JPanel implements Runnable {
 
         //cloud
         g.setColor(CLOUD_WHITE);
-        g.fillOval(130, 130, 60, 40);
-        g.fillOval(160, 110, 60, 50);
-        g.fillOval(190, 130, 60, 40);
-        g.fillRect(160, 140, 60, 30);
+        g.fillOval(130 + moveCloud, 130, 60, 40);
+        g.fillOval(160 + moveCloud, 110, 60, 50);
+        g.fillOval(190 + moveCloud, 130, 60, 40);
+        g.fillRect(160 + moveCloud, 140, 60, 30);
     }
 
     private void cloudyDay() {
