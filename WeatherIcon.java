@@ -64,8 +64,13 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        sunnyDay(g);
+        String condition = weatherCondition.toLowerCase();
+        
+        if(condition.equals("sunny")){
+            sunnyDay(g);
+        }else if(condition.equals("partly cloudy")){
+            partlyCloudy(g);
+        }
 
     }
 
@@ -127,8 +132,33 @@ public class WeatherIcon extends JPanel implements Runnable {
         }
     }
 
-    private void partlyCloudy() {
+    private void partlyCloudy(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.fillOval(90, 110, 60, 60);
 
+        //sun rays
+        g.drawLine(120, 110, 120, 90);
+        g.drawLine(119, 110, 119, 90);
+        g.drawLine(121, 110, 121, 90);
+
+        g.drawLine(120, 170, 120, 190);
+        g.drawLine(119, 170, 119, 190);
+        g.drawLine(121, 170, 121, 190);
+
+        g.drawLine(90, 140, 70, 140);
+        g.drawLine(90, 139, 70, 139);
+        g.drawLine(90, 141, 70, 141);
+
+        g.drawLine(150, 140, 170, 140);
+        g.drawLine(150, 139, 170, 139);
+        g.drawLine(150, 141, 170, 141);
+
+        //cloud
+        g.setColor(CLOUD_WHITE);
+        g.fillOval(130, 130, 60, 40);
+        g.fillOval(160, 110, 60, 50);
+        g.fillOval(190, 130, 60, 40);
+        g.fillRect(160, 140, 60, 30);
     }
 
     private void cloudyDay() {
@@ -148,7 +178,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("sunny"));
+        SwingUtilities.invokeLater(new WeatherIcon("partly cloudy"));
 
     }
 
