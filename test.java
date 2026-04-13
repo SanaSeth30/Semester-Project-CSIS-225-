@@ -1,8 +1,10 @@
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+
 /**
  * This file is used for the testing of the DayData class
+ * 
  * @author Patrick McFee
  * @version Spring 2026
  */
@@ -26,6 +28,12 @@ public class test {
         System.out.println("The daily high tempature is " + today.getDailyHighestTemp() + " and the low is "
                 + today.getDailyLowestTemp());
         System.out.println(
-                today.getWindSpeed(0) + "mph is the wind speed, " + today.getHumitity(0) + "% is the humidity");
+                today.getWindSpeed(0) + "mph is the wind speed, " + today.getHumitity(0)
+             + "% is the humidity");
+
+        WeekData todayOn = new WeekData(ZonedDateTime.now(),"43.2994,-74.2179");
+        todayOn.populateData();
+        System.out.println(todayOn.getTemperature(0)+" is the tempature for today and "+ todayOn.getTemperature(1)+ " is tomorrows");
     }
+
 }

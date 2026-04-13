@@ -68,11 +68,11 @@ public interface WeatherData {
      * @return The low tempature for the day
      */
 
-    double getDailyLowestTemp();
+    //double getDailyLowestTemp();
 
     /**
      * Retrieves the high tempature for the day
      * @return the high tempature for the day
      */
-    double getDailyHighestTemp();
+    //double getDailyHighestTemp();
 }
