@@ -28,7 +28,11 @@ public class WeatherIcon extends JPanel implements Runnable {
     private final Color RAIN_BLUE = new Color(80, 140, 200);
     private final Color LIGHTNING_BOLT = new Color(255, 240, 60);
 
-    private static final int DELAY_TIME = 300;
+    private static final int DELAY_TIME = 70;
+
+    //cloud instance variables
+    private int moveCloud = 0;
+    private int cloudDirection = 1;
 
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
@@ -49,11 +53,16 @@ public class WeatherIcon extends JPanel implements Runnable {
             public void run() {
                 while (true) {
                     sunRays = !sunRays;
+
+                    moveCloud += cloudDirection * 2; //moves cloud right
+                    if (moveCloud > 15 || moveCloud < -40) {
+                        cloudDirection *= -1; //moves cloud back left
+                    }
+
                     repaint();
                     try {
                         Thread.sleep(DELAY_TIME);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -64,8 +73,15 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        String condition = weatherCondition.toLowerCase();
 
-        sunnyDay(g);
+        if (condition.equals("sunny")) {
+            sunnyDay(g);
+        } else if (condition.equals("partly cloudy")) {
+            partlyCloudy(g);
+        } else if (condition.equals("cloudy")) {
+            cloudyDay(g);
+        }
 
     }
 
@@ -127,11 +143,63 @@ public class WeatherIcon extends JPanel implements Runnable {
         }
     }
 
-    private void partlyCloudy() {
+    private void partlyCloudy(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.fillOval(90, 110, 60, 60);
 
+        //sun rays
+        g.drawLine(120, 110, 120, 80); //top
+        g.drawLine(119, 110, 119, 80);
+        g.drawLine(121, 110, 121, 80);
+
+        g.drawLine(120, 170, 120, 200);
+        g.drawLine(119, 170, 119, 200);//bottom
+        g.drawLine(121, 170, 121, 200);
+
+        g.drawLine(90, 140, 60, 140);
+        g.drawLine(90, 139, 60, 139);//left
+        g.drawLine(90, 141, 60, 141);
+
+        g.drawLine(150, 140, 180, 140);
+        g.drawLine(150, 139, 180, 139);//right
+        g.drawLine(150, 141, 180, 141);
+
+        g.drawLine(105, 118, 85, 100); //top left
+        g.drawLine(106, 118, 86, 100);
+        g.drawLine(104, 118, 84, 100);
+
+        g.drawLine(130, 120, 150, 95); //top right
+        g.drawLine(131, 120, 151, 95);
+        g.drawLine(129, 120, 149, 95);
+
+        g.drawLine(110, 160, 90, 185); //bottom left
+        g.drawLine(111, 160, 91, 185);
+        g.drawLine(109, 160, 89, 185);
+
+        g.drawLine(130, 160, 150, 185); //bottom right
+        g.drawLine(131, 160, 151, 185);
+        g.drawLine(129, 160, 149, 185);
+
+        //cloud
+        g.setColor(CLOUD_WHITE);
+        g.fillOval(130 + moveCloud, 130, 60, 40);
+        g.fillOval(160 + moveCloud, 110, 60, 50);
+        g.fillOval(190 + moveCloud, 130, 60, 40);
+        g.fillRect(160 + moveCloud, 140, 60, 30);
     }
 
-    private void cloudyDay() {
+    private void cloudyDay(Graphics g) {
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(80 + moveCloud, 120, 70, 45);
+        g.fillOval(120 + moveCloud, 100, 80, 55);
+        g.fillOval(170 + moveCloud, 120, 70, 45);
+        g.fillRect(120 + moveCloud, 130, 80, 35);
+
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(100 - moveCloud, 140, 70, 45);
+        g.fillOval(140 - moveCloud, 120, 80, 55);
+        g.fillOval(190 - moveCloud, 140, 70, 45);
+        g.fillRect(140 - moveCloud, 150, 80, 35);
 
     }
 
@@ -148,7 +216,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("sunny"));
+        SwingUtilities.invokeLater(new WeatherIcon("cloudy"));
 
     }
 
