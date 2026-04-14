@@ -34,6 +34,12 @@ public class WeatherIcon extends JPanel implements Runnable {
     private int moveCloud = 0;
     private int cloudDirection = 1;
 
+    //instance variable for rain so they all drop at different times
+    private int rain1 = 0;
+    private int rain2 = 20;
+    private int rain3 = 40;
+    private int rain4 = 60;
+
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
     }
@@ -59,6 +65,23 @@ public class WeatherIcon extends JPanel implements Runnable {
                         cloudDirection *= -1; //moves cloud back left
                     }
 
+                    rain1 += 6;
+                    rain2 += 6;
+                    rain3 += 6;
+                    rain4 += 6;
+                    if (rain1 > 80) {
+                        rain1 = 0;
+                    }
+                    if (rain2 > 80) {
+                        rain2 = 0;
+                    }
+                    if (rain3 > 80) {
+                        rain3 = 0;
+                    }
+                    if (rain4 > 80) {
+                        rain4 = 0;
+                    }
+
                     repaint();
                     try {
                         Thread.sleep(DELAY_TIME);
@@ -81,6 +104,8 @@ public class WeatherIcon extends JPanel implements Runnable {
             partlyCloudy(g);
         } else if (condition.equals("cloudy")) {
             cloudyDay(g);
+        } else if (condition.equals("rainy")) {
+            rainyDay(g);
         }
 
     }
@@ -203,8 +228,26 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     }
 
-    private void rainyDay() {
+    private void rainyDay(Graphics g) {
+        //cloud
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(110, 110, 60, 40);
+        g.fillOval(140, 90, 70, 50);
+        g.fillOval(180, 110, 60, 40);
+        g.fillRect(140, 120, 70, 30);
 
+        //rain 
+        g.setColor(RAIN_BLUE);
+
+        g.drawLine(140, 150 + rain1, 140, 165 + rain1);
+        g.drawLine(160, 150 + rain2, 160, 165 + rain2);
+        g.drawLine(180, 150 + rain3, 180, 165 + rain3);
+        g.drawLine(200, 150 + rain4, 200, 165 + rain4);
+        g.drawLine(220, 150 + rain1, 220, 165 + rain1);
+
+        //puddle
+        g.setColor(new Color(100, 160, 220));
+        g.fillOval(120, 240, 120, 20);
     }
 
     private void thunderstorm() {
@@ -216,7 +259,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("cloudy"));
+        SwingUtilities.invokeLater(new WeatherIcon("rainy"));
 
     }
 
