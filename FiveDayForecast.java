@@ -7,13 +7,13 @@ import javax.swing.border.*;
  * @author Sana Seth
  * @version Spring 2026
  */
-public class SevenDayForecast extends JPanel {
+public class FiveDayForecast extends JPanel {
 
-    public SevenDayForecast() {
+    public FiveDayForecast() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("Seven Day Forecast", JLabel.CENTER);
+        JLabel title = new JLabel("Five Day Forecast", JLabel.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
@@ -74,8 +74,8 @@ public class SevenDayForecast extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Seven Day Forecast");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
-        frame.add(new SevenDayForecast());
+        frame.setSize(1000, 900);
+        frame.add(new FiveDayForecast());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
