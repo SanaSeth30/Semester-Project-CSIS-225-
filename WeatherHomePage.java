@@ -45,11 +45,11 @@ public class WeatherHomePage extends JFrame {
         oneDayPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 5), "One Day Forecast"));
 
         // Seven day forecast panel with thick border and title
-        SevenDayForecast sevenDayPanel = new SevenDayForecast();
-        sevenDayPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 5), "Seven Day Forecast"));
+        FiveDayForecast fiveDayPanel = new FiveDayForecast();
+        fiveDayPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 5), "Five Day Forecast"));
 
         splitPane.setLeftComponent(oneDayPanel);
-        splitPane.setRightComponent(sevenDayPanel);
+        splitPane.setRightComponent(fiveDayPanel);
         splitPane.setDividerLocation(4500);
         add(splitPane, BorderLayout.CENTER);
     }
