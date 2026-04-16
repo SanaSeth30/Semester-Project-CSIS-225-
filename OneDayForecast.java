@@ -49,7 +49,7 @@ public class OneDayForecast extends JPanel {
         DayData data = new DayData(ZonedDateTime.now(), "42.6526,-73.7562"); // Albany coords
         data.populateData();
 
-        for (int i = 0; i < 23; i++) {
+        for (int i = 0; i < 24; i++) {
 
             JLabel time = new JLabel(String.format("%02d:00", i), JLabel.CENTER);
             time.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
@@ -76,7 +76,7 @@ public class OneDayForecast extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("One Day Forecast");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(900, 800);
         frame.add(new OneDayForecast());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
