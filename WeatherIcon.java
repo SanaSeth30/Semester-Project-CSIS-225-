@@ -43,6 +43,10 @@ public class WeatherIcon extends JPanel implements Runnable {
     // instance variable for thunderstorm method
     private boolean lightningFlash = false;
 
+    // instance variables for windyDay() method
+    private int windMove = 0;
+    private int windDirection = 1;
+
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
     }
@@ -67,6 +71,11 @@ public class WeatherIcon extends JPanel implements Runnable {
                     moveCloud += cloudDirection * 2; // moves cloud right
                     if (moveCloud > 15 || moveCloud < -40) {
                         cloudDirection *= -1; // moves cloud back left
+                    }
+
+                    windMove += windDirection * 3;
+                    if (windMove > 20 || windMove < -20) {
+                        windDirection *= -1; // reverse direction
                     }
 
                     rain1 += 6;
@@ -112,6 +121,8 @@ public class WeatherIcon extends JPanel implements Runnable {
             rainyDay(g);
         } else if (condition.equals("thunderstorm")) {
             thunderstorm(g);
+        } else if (condition.equals("windy")) {
+            windyDay(g);
         }
 
     }
@@ -211,7 +222,7 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.drawLine(131, 160, 151, 185);
         g.drawLine(129, 160, 149, 185);
 
-        // cloud
+        //cloud
         g.setColor(CLOUD_WHITE);
         g.fillOval(130 + moveCloud, 130, 60, 40);
         g.fillOval(160 + moveCloud, 110, 60, 50);
@@ -235,14 +246,14 @@ public class WeatherIcon extends JPanel implements Runnable {
     }
 
     private void rainyDay(Graphics g) {
-        // cloud
+        //cloud
         g.setColor(CLOUD_GRAY);
         g.fillOval(110, 110, 60, 40);
         g.fillOval(140, 90, 70, 50);
         g.fillOval(180, 110, 60, 40);
         g.fillRect(140, 120, 70, 30);
 
-        // rain
+        //rain
         g.setColor(RAIN_BLUE);
 
         g.drawLine(140, 150 + rain1, 140, 165 + rain1);
@@ -251,7 +262,7 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.drawLine(200, 150 + rain4, 200, 165 + rain4);
         g.drawLine(220, 150 + rain1, 220, 165 + rain1);
 
-        // puddle
+        //puddle
         g.setColor(new Color(100, 160, 220));
         g.fillOval(120, 240, 120, 20);
     }
@@ -269,25 +280,44 @@ public class WeatherIcon extends JPanel implements Runnable {
             g.setColor(LIGHTNING_BOLT);
 
             //slanted rectangle for top part of lightning bolt
-            int[] rectX = {175, 165, 180, 190};
-            int[] rectY = {130, 165, 175, 140};
+            int[] rectX = { 175, 165, 180, 190 };
+            int[] rectY = { 130, 165, 175, 140 };
 
             g.fillPolygon(rectX, rectY, 4);
 
             //upside down triangle hanging off the right side of rectangle
-            int[] triX = {180, 200, 185};
-            int[] triY = {160, 170, 220};
+            int[] triX = { 180, 200, 185 };
+            int[] triY = { 160, 170, 220 };
 
             g.fillPolygon(triX, triY, 3);
         }
     }
 
-    private void windyDay() {
+    private void windyDay(Graphics g) {
+        //cloud
+        g.setColor(CLOUD_GRAY);
+        g.fillOval(110, 100, 60, 40);
+        g.fillOval(140, 80, 70, 50);
+        g.fillOval(180, 100, 60, 40);
+        g.fillRect(140, 110, 70, 30);
 
+        g.setColor(Color.GRAY);
+
+        //first swoosh upright)
+        g.drawLine(120 + windMove, 170, 180 + windMove, 170);
+        g.drawArc(180 + windMove, 160, 40, 20, 0, 180);
+
+        //second swoosh upside down
+        g.drawLine(120 + windMove, 200, 180 + windMove, 200);
+        g.drawArc(180 + windMove, 190, 40, 20, 0, -180);
+
+        //third swoosh slightly behind
+        g.drawLine(100 + windMove, 185, 160 + windMove, 185);
+        g.drawArc(160 + windMove, 175, 40, 20, 0, 180);
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("thunderstorm"));
+        SwingUtilities.invokeLater(new WeatherIcon("windy"));
 
     }
 
