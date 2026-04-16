@@ -47,10 +47,17 @@ public class WeatherIcon extends JPanel implements Runnable {
     private int windMove = 0;
     private int windDirection = 1;
 
+    /**
+     * creates the weather icon condition
+     * @param condition the type of weather condition
+     */
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
     }
 
+    /**
+     * starts the animation for the weather condition
+     */
     @Override
     public void run() {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -107,6 +114,10 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     }
 
+    /**
+     * draws the appropriate weather icon based on condition
+     * @param g the graphic used for drawing
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         String condition = weatherCondition.toLowerCase();
@@ -127,6 +138,10 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     }
 
+    /**
+     * draws sunny icon
+     * @param g the graphic used for drawing
+     */
     private void sunnyDay(Graphics g) {
         g.setColor(Color.YELLOW);
         g.fillOval(120, 120, 60, 60);
@@ -185,6 +200,10 @@ public class WeatherIcon extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * draws partly cloudy icon with moving clouds
+     * @param g the graphic used for drawing
+     */
     private void partlyCloudy(Graphics g) {
         g.setColor(Color.YELLOW);
         g.fillOval(90, 110, 60, 60);
@@ -230,6 +249,10 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.fillRect(160 + moveCloud, 140, 60, 30);
     }
 
+    /**
+     * draws cloudy weather with moving clouds
+     * @param g the graphic used for drawing
+     */
     private void cloudyDay(Graphics g) {
         g.setColor(CLOUD_GRAY);
         g.fillOval(80 + moveCloud, 120, 70, 45);
@@ -245,6 +268,10 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     }
 
+    /**
+     * draws rain condition with cloud
+     * @param g the graphic used for drawing
+     */
     private void rainyDay(Graphics g) {
         //cloud
         g.setColor(CLOUD_GRAY);
@@ -267,6 +294,10 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.fillOval(120, 240, 120, 20);
     }
 
+    /**
+     * creates thunderstorm with lightning bolt flashing and cloud 
+     * @param g the graphic used for drawing
+     */
     private void thunderstorm(Graphics g) {
         //cloud
         g.setColor(CLOUD_DARK);
@@ -293,6 +324,10 @@ public class WeatherIcon extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * draws cloud and has swooshed lines going across screen
+     * @param g the graphic used for drawing
+     */
     private void windyDay(Graphics g) {
         //cloud
         g.setColor(CLOUD_GRAY);
@@ -316,6 +351,10 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.drawArc(160 + windMove, 175, 40, 20, 0, 180);
     }
 
+    /**
+     * main method
+     * @param args
+     */
     public static void main(String args[]) {
         SwingUtilities.invokeLater(new WeatherIcon("windy"));
 
