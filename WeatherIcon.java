@@ -26,7 +26,7 @@ public class WeatherIcon extends JPanel {
     private final Color RAIN_BLUE = new Color(80, 140, 200);
     private final Color LIGHTNING_BOLT = new Color(255, 240, 60);
 
-    private static final int DELAY_TIME = 350;
+    private static final int DELAY_TIME = 60;
 
     // cloud instance variables
     private int moveCloud = 0;
@@ -45,6 +45,14 @@ public class WeatherIcon extends JPanel {
     private int windMove = 0;
     private int windDirection = 1;
 
+    // instance variables for the animation speeds for each weather condition. added
+    // these to make the animation look more natural and less choppy
+    private int sunSpeed = 0;
+    private int cloudSpeed = 0;
+    private int rainSpeed = 0;
+    private int windSpeed = 0;
+    private int stormSpeed = 0;
+
     /**
      * creates the weather icon condition
      * 
@@ -58,41 +66,50 @@ public class WeatherIcon extends JPanel {
     /**
      * starts the animation for the weather condition
      */
-    public void startAnimation(){
+    public void startAnimation() {
         Thread animation = new Thread() {
             public void run() {
                 while (true) {
-                    sunRays = !sunRays;
-                    lightningFlash = !lightningFlash;
+                    sunSpeed++;
+                    cloudSpeed++;
+                    rainSpeed++;
+                    windSpeed++;
+                    stormSpeed++;
 
-                    moveCloud += cloudDirection * 2; // moves cloud right
-                    if (moveCloud > 15 || moveCloud < -40) {
-                        cloudDirection *= -1; // moves cloud back left
+                    if (sunSpeed % 5 == 0) {
+                        sunRays = !sunRays;
                     }
-
-                    windMove += windDirection * 3;
-                    if (windMove > 20 || windMove < -20) {
-                        windDirection *= -1; // reverse direction
+                    if (cloudSpeed % 1 == 0) {
+                        moveCloud += cloudDirection * 2;
+                        if (moveCloud > 15 || moveCloud < -40) {
+                            cloudDirection *= -1;
+                        }
                     }
-
-                    rain1 += 6;
-                    rain2 += 6;
-                    rain3 += 6;
-                    rain4 += 6;
-                    if (rain1 > 80) {
-                        rain1 = 0;
+                    if (rainSpeed % 1 == 0) {
+                        rain1 += 6;
+                        rain2 += 6;
+                        rain3 += 6;
+                        rain4 += 6;
+                        if (rain1 > 80)
+                            rain1 = 0;
+                        if (rain2 > 80)
+                            rain2 = 0;
+                        if (rain3 > 80)
+                            rain3 = 0;
+                        if (rain4 > 80)
+                            rain4 = 0;
                     }
-                    if (rain2 > 80) {
-                        rain2 = 0;
+                    if (windSpeed % 1 == 0) {
+                        windMove += windDirection * 2;
+                        if (windMove > 20 || windMove < -20) {
+                            windDirection *= -1;
+                        }
                     }
-                    if (rain3 > 80) {
-                        rain3 = 0;
+                    if (stormSpeed % 11 == 0) {
+                        lightningFlash = !lightningFlash;
                     }
-                    if (rain4 > 80) {
-                        rain4 = 0;
-                    }
-
                     repaint();
+
                     try {
                         Thread.sleep(DELAY_TIME);
                     } catch (InterruptedException e) {
@@ -121,11 +138,11 @@ public class WeatherIcon extends JPanel {
         } else if (condition.equals("cloudy")) {
             cloudyDay(g, w, h);
         } else if (condition.equals("rainy")) {
-            rainyDay(g,w,h);
+            rainyDay(g, w, h);
         } else if (condition.equals("thunderstorm")) {
-            thunderstorm(g,w,h);
+            thunderstorm(g, w, h);
         } else if (condition.equals("windy")) {
-            windyDay(g,w,h);
+            windyDay(g, w, h);
         }
 
     }
@@ -137,7 +154,7 @@ public class WeatherIcon extends JPanel {
      */
     private void sunnyDay(Graphics g, int w, int h) {
         g.setColor(Color.YELLOW);
-        g.fillOval(120 * w / 300, 120 * h / 300, 60 * w / 300, 60 * h / 300); 
+        g.fillOval(120 * w / 300, 120 * h / 300, 60 * w / 300, 60 * h / 300);
 
         // creates different color rays every other
         for (int i = 0; i < 8; i++) {
