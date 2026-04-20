@@ -1,66 +1,107 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Color;
-import java.awt.Font;
+import java.time.ZonedDateTime;
+
 /**
- * This program will display the weather home page
- * this will display city one day and 7 day forcast
- * 
+ * displays one day and 5 day page
  * 
  * @author Sanju Arikatla
  * @version Spring 2026
  */
-
 public class WeatherHomePage extends JFrame {
 
+    private JComboBox<String> cityDropdown;
+
+    private OneDayForecast oneDayPanel;
+    private FiveDayForecast fiveDayPanel;
+
     public WeatherHomePage() {
+
         setTitle("Weather Home Page");
+        setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 600);
-        setLocationRelativeTo(null);
-        //this is where we will be able to get the selection for the city and display it
-        JPanel topPanel = new JPanel(new FlowLayout());
-        JLabel cityLabel = new JLabel("Select City: ");
-        cityLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        String[] cities = {"New York City", "Buffalo", "Yonkers", "Rochester", "Syracuse", "Albany", "New Rochelle"};
-        JComboBox<String> cityDropdown = new JComboBox<>(cities);
+        setLayout(new BorderLayout());
+
+        // ---------- TOP PANEL ----------
+        JPanel topPanel = new JPanel();
+
+        JLabel cityLabel = new JLabel("Select City:");
+
+        String[] cities = {
+            "New York City", "Buffalo", "Yonkers",
+            "Rochester", "Syracuse", "Albany", "New Rochelle"
+        };
+
+        cityDropdown = new JComboBox<>(cities);
 
         topPanel.add(cityLabel);
         topPanel.add(cityDropdown);
+
         add(topPanel, BorderLayout.NORTH);
 
-        // Main split panel so on the  left we have our box that displayes one day forecast right we have seven day forecast
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        // ---------- ONE DAY PANEL ----------
+        oneDayPanel = new OneDayForecast();
 
-        // One day forecast panel with thick border and title
-        OneDayForecast oneDayPanel = new OneDayForecast();
-        oneDayPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 5), "One Day Forecast"));
+        JPanel oneDayWrapper = new JPanel(new BorderLayout());
+        oneDayWrapper.setBorder(
+            new TitledBorder(new LineBorder(Color.BLACK), "One Day Forecast")
+        );
 
-        // Seven day forecast panel with thick border and title
-        FiveDayForecast fiveDayPanel = new FiveDayForecast();
-        fiveDayPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 5), "Five Day Forecast"));
+        oneDayWrapper.add(oneDayPanel, BorderLayout.CENTER);
 
-        splitPane.setLeftComponent(oneDayPanel);
-        splitPane.setRightComponent(fiveDayPanel);
-        splitPane.setDividerLocation(4500);
+        // ---------- FIVE DAY PANEL ----------
+        fiveDayPanel = new FiveDayForecast();
+
+        JPanel fiveDayWrapper = new JPanel(new BorderLayout());
+        fiveDayWrapper.setBorder(
+            new TitledBorder(new LineBorder(Color.BLACK), "Five Day Forecast")
+        );
+
+        fiveDayWrapper.add(fiveDayPanel, BorderLayout.CENTER);
+
+        // ---------- SPLIT SCREEN ----------
+        JSplitPane splitPane = new JSplitPane(
+            JSplitPane.HORIZONTAL_SPLIT,
+            oneDayWrapper,
+            fiveDayWrapper
+        );
+
+        splitPane.setDividerLocation(400);
+
         add(splitPane, BorderLayout.CENTER);
+
+        // DROPDOWN ACTION 
+        cityDropdown.addActionListener(e -> {
+
+            String city = (String) cityDropdown.getSelectedItem();
+            String coords = getCoordinates(city);
+
+            // get weather data
+            DayData today = new DayData(ZonedDateTime.now(), coords);
+            today.populateData();
+
+            // update panels (IMPORTANT: these methods must exist)
+            oneDayPanel.updateData(today);
+            fiveDayPanel.updateData(coords);
+        });
+    }
+
+    // maps city to coordinates
+    private String getCoordinates(String city) {
+        if (city.equals("New York City")) return "40.7128,-74.0060";
+        if (city.equals("Buffalo")) return "42.8864,-78.8784";
+        if (city.equals("Yonkers")) return "40.9312,-73.8988";
+        if (city.equals("Rochester")) return "43.1566,-77.6088";
+        if (city.equals("Syracuse")) return "43.0481,-76.1474";
+        if (city.equals("Albany")) return "42.6526,-73.7562";
+        if (city.equals("New Rochelle")) return "40.9115,-73.7824";
+
+        return "40.7128,-74.0060";
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                WeatherHomePage homePage = new WeatherHomePage();
-                homePage.setVisible(true);
-            }
-        });
+        new WeatherHomePage().setVisible(true);
     }
 }
