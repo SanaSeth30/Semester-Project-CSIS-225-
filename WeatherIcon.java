@@ -49,10 +49,12 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * creates the weather icon condition
+     * 
      * @param condition the type of weather condition
      */
     public WeatherIcon(String condition) {
         this.weatherCondition = condition;
+        setPreferredSize(new Dimension(60, 60));
     }
 
     /**
@@ -116,14 +118,17 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * draws the appropriate weather icon based on condition
+     * 
      * @param g the graphic used for drawing
      */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        int w = getWidth();
+        int h = getHeight();
         String condition = weatherCondition.toLowerCase();
 
         if (condition.equals("sunny")) {
-            sunnyDay(g);
+            sunnyDay(g, w, h);
         } else if (condition.equals("partly cloudy")) {
             partlyCloudy(g);
         } else if (condition.equals("cloudy")) {
@@ -140,11 +145,12 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * draws sunny icon
+     * 
      * @param g the graphic used for drawing
      */
-    private void sunnyDay(Graphics g) {
+    private void sunnyDay(Graphics g, int w, int h) {
         g.setColor(Color.YELLOW);
-        g.fillOval(120, 120, 60, 60);
+        g.fillOval(120*w/300, 120*h/300, 60*w/300, 60*h/300);
 
         // creates different color rays every other
         for (int i = 0; i < 8; i++) {
@@ -157,51 +163,52 @@ public class WeatherIcon extends JPanel implements Runnable {
             g.setColor(rayColor);
 
             if (i == 0) {
-                g.drawLine(150, 120, 150, 90); // top
-                g.drawLine(151, 120, 151, 90);
-                g.drawLine(149, 120, 149, 90);
+                g.drawLine(150*w/300, 120*h/300, 150*w/300, 90*h/300); // top
+                g.drawLine(151*w/300, 120*h/300, 151*w/300, 90*h/300);
+                g.drawLine(149*w/300, 120*h/300, 149*w/300, 90*h/300);
             }
             if (i == 1) {
-                g.drawLine(175, 130, 210, 110); // top right
-                g.drawLine(176, 130, 211, 110);
-                g.drawLine(174, 130, 209, 110);
+                g.drawLine(175*w/300, 130*h/300, 210*w/300, 110*h/300); // top right
+                g.drawLine(176*w/300, 130*h/300, 211*w/300, 110*h/300);
+                g.drawLine(174*w/300, 130*h/300, 209*w/300, 110*h/300);
             }
             if (i == 2) {
-                g.drawLine(180, 150, 220, 150); // right
-                g.drawLine(180, 151, 220, 151);
-                g.drawLine(180, 149, 220, 149);
+                g.drawLine(180*w/300, 150*h/300, 220*w/300, 150*h/300); // right
+                g.drawLine(180*w/300, 151*h/300, 220*w/300, 151*h/300);
+                g.drawLine(180*w/300, 149*h/300, 220*w/300, 149*h/300);
             }
             if (i == 3) {
-                g.drawLine(175, 170, 210, 190); // bottom right
-                g.drawLine(176, 170, 211, 190);
-                g.drawLine(174, 170, 209, 190);
+                g.drawLine(175*w/300, 170*h/300, 210*w/300, 190*h/300); // bottom right
+                g.drawLine(176*w/300, 170*h/300, 211*w/300, 190*h/300);
+                g.drawLine(174*w/300, 170*h/300, 209*w/300, 190*h/300);
             }
             if (i == 4) {
-                g.drawLine(150, 180, 150, 210); // bottom
-                g.drawLine(151, 180, 151, 210);
-                g.drawLine(149, 180, 149, 210);
+                g.drawLine(150*w/300, 180*h/300, 150*w/300, 210*h/300); // bottom
+                g.drawLine(151*w/300, 180*h/300, 151*w/300, 210*h/300);
+                g.drawLine(149*w/300, 180*h/300, 149*w/300, 210*h/300);
             }
             if (i == 5) {
-                g.drawLine(125, 170, 90, 190); // bottom left
-                g.drawLine(126, 170, 91, 190);
-                g.drawLine(124, 170, 89, 190);
+                g.drawLine(125*w/300, 170*h/300, 90*w/300, 190*h/300); // bottom left
+                g.drawLine(126*w/300, 170*h/300, 91*w/300, 190*h/300);
+                g.drawLine(124*w/300, 170*h/300, 89*w/300, 190*h/300);
             }
             if (i == 6) {
-                g.drawLine(120, 150, 80, 150); // left
-                g.drawLine(120, 151, 80, 151);
-                g.drawLine(120, 149, 80, 149);
+                g.drawLine(120*w/300, 150*h/300, 80*w/300, 150*h/300); // left
+                g.drawLine(120*w/300, 151*h/300, 80*w/300, 151*h/300);
+                g.drawLine(120*w/300, 149*h/300, 80*w/300, 149*h/300);
 
             }
             if (i == 7) {
-                g.drawLine(124, 130, 90, 110); // top left
-                g.drawLine(125, 130, 91, 110);
-                g.drawLine(123, 130, 89, 110);
+                g.drawLine(124*w/300, 130*h/300, 90*w/300, 110*h/300); // top left
+                g.drawLine(125*w/300, 130*h/300, 91*w/300, 110*h/300);
+                g.drawLine(123*w/300, 130*h/300, 89*w/300, 110*h/300);
             }
         }
     }
 
     /**
      * draws partly cloudy icon with moving clouds
+     * 
      * @param g the graphic used for drawing
      */
     private void partlyCloudy(Graphics g) {
@@ -241,7 +248,7 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.drawLine(131, 160, 151, 185);
         g.drawLine(129, 160, 149, 185);
 
-        //cloud
+        // cloud
         g.setColor(CLOUD_WHITE);
         g.fillOval(130 + moveCloud, 130, 60, 40);
         g.fillOval(160 + moveCloud, 110, 60, 50);
@@ -251,6 +258,7 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * draws cloudy weather with moving clouds
+     * 
      * @param g the graphic used for drawing
      */
     private void cloudyDay(Graphics g) {
@@ -270,17 +278,18 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * draws rain condition with cloud
+     * 
      * @param g the graphic used for drawing
      */
     private void rainyDay(Graphics g) {
-        //cloud
+        // cloud
         g.setColor(CLOUD_GRAY);
         g.fillOval(110, 110, 60, 40);
         g.fillOval(140, 90, 70, 50);
         g.fillOval(180, 110, 60, 40);
         g.fillRect(140, 120, 70, 30);
 
-        //rain
+        // rain
         g.setColor(RAIN_BLUE);
 
         g.drawLine(140, 150 + rain1, 140, 165 + rain1);
@@ -289,34 +298,35 @@ public class WeatherIcon extends JPanel implements Runnable {
         g.drawLine(200, 150 + rain4, 200, 165 + rain4);
         g.drawLine(220, 150 + rain1, 220, 165 + rain1);
 
-        //puddle
+        // puddle
         g.setColor(new Color(100, 160, 220));
         g.fillOval(120, 240, 120, 20);
     }
 
     /**
-     * creates thunderstorm with lightning bolt flashing and cloud 
+     * creates thunderstorm with lightning bolt flashing and cloud
+     * 
      * @param g the graphic used for drawing
      */
     private void thunderstorm(Graphics g) {
-        //cloud
+        // cloud
         g.setColor(CLOUD_DARK);
         g.fillOval(110, 110, 60, 40);
         g.fillOval(140, 90, 70, 50);
         g.fillOval(180, 110, 60, 40);
         g.fillRect(140, 120, 70, 30);
 
-        //lightning
+        // lightning
         if (lightningFlash == false) {
             g.setColor(LIGHTNING_BOLT);
 
-            //slanted rectangle for top part of lightning bolt
+            // slanted rectangle for top part of lightning bolt
             int[] rectX = { 175, 165, 180, 190 };
             int[] rectY = { 130, 165, 175, 140 };
 
             g.fillPolygon(rectX, rectY, 4);
 
-            //upside down triangle hanging off the right side of rectangle
+            // upside down triangle hanging off the right side of rectangle
             int[] triX = { 180, 200, 185 };
             int[] triY = { 160, 170, 220 };
 
@@ -326,10 +336,11 @@ public class WeatherIcon extends JPanel implements Runnable {
 
     /**
      * draws cloud and has swooshed lines going across screen
+     * 
      * @param g the graphic used for drawing
      */
     private void windyDay(Graphics g) {
-        //cloud
+        // cloud
         g.setColor(CLOUD_GRAY);
         g.fillOval(110, 100, 60, 40);
         g.fillOval(140, 80, 70, 50);
@@ -338,25 +349,26 @@ public class WeatherIcon extends JPanel implements Runnable {
 
         g.setColor(Color.GRAY);
 
-        //first swoosh upright)
+        // first swoosh upright)
         g.drawLine(120 + windMove, 170, 180 + windMove, 170);
         g.drawArc(180 + windMove, 160, 40, 20, 0, 180);
 
-        //second swoosh upside down
+        // second swoosh upside down
         g.drawLine(120 + windMove, 200, 180 + windMove, 200);
         g.drawArc(180 + windMove, 190, 40, 20, 0, -180);
 
-        //third swoosh slightly behind
+        // third swoosh slightly behind
         g.drawLine(100 + windMove, 185, 160 + windMove, 185);
         g.drawArc(160 + windMove, 175, 40, 20, 0, 180);
     }
 
     /**
      * main method
+     * 
      * @param args
      */
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("windy"));
+        SwingUtilities.invokeLater(new WeatherIcon("sunny"));
 
     }
 

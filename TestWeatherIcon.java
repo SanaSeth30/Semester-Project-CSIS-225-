@@ -6,7 +6,7 @@ public class TestWeatherIcon {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
 
-        WeatherIcon icon = new WeatherIcon("rainy");
+        WeatherIcon icon = new WeatherIcon("sunny");
         frame.add(icon);
 
         frame.setLocationRelativeTo(null);
