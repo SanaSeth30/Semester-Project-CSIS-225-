@@ -2,9 +2,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * This program will display the weather icons such as sunny, partly cloudy,
@@ -14,7 +12,7 @@ import javax.swing.SwingUtilities;
  * @author Lucas Davey
  * @version Spring 2026
  */
-public class WeatherIcon extends JPanel implements Runnable {
+public class WeatherIcon extends JPanel {
 
     private String weatherCondition;
     private boolean sunRays = true;
@@ -60,17 +58,7 @@ public class WeatherIcon extends JPanel implements Runnable {
     /**
      * starts the animation for the weather condition
      */
-    @Override
-    public void run() {
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("Weather: " + weatherCondition);
-        frame.setPreferredSize(new Dimension(300, 300));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.add(this);
-        frame.pack();
-        frame.setVisible(true);
-
+    public void startAnimation(){
         Thread animation = new Thread() {
             public void run() {
                 while (true) {
@@ -113,7 +101,6 @@ public class WeatherIcon extends JPanel implements Runnable {
             }
         };
         animation.start();
-
     }
 
     /**
@@ -359,16 +346,6 @@ public class WeatherIcon extends JPanel implements Runnable {
         // third swoosh slightly behind
         g.drawLine((100 + windMove) * w / 300, 185 * h / 300, (160 + windMove) * w / 300, 185 * h / 300);
         g.drawArc((160 + windMove) * w / 300, 175 * h / 300, 40 * w / 300, 20 * h / 300, 0, 180);
-    }
-
-    /**
-     * main method
-     * 
-     * @param args
-     */
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new WeatherIcon("windy"));
-
     }
 
 }

@@ -5,32 +5,17 @@ import javax.swing.*;
 /**
  * Small helper class for displaying WeatherIcon in table cells
  * 
- * @author Sana Seth
+ * @author Sana Seth & Lucas Davey
  * @version Spring 2026
  */
 public class SmallWeatherIcon extends JPanel {
-
-    private WeatherIcon iconPanel;
-
     public SmallWeatherIcon(String condition) {
-        iconPanel = new WeatherIcon(condition);
-        setPreferredSize(new Dimension(90, 70));
+        setLayout(new GridBagLayout());
         setBackground(Color.WHITE);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        BufferedImage image = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = image.createGraphics();
-
-        iconPanel.setSize(300, 300);
-        iconPanel.paint(g2);
-
-        g2.dispose();
-
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        WeatherIcon icon = new WeatherIcon(condition);
+        icon.setPreferredSize(new Dimension(60,60));
+        icon.startAnimation();
+        add(icon);
     }
 
     public static void main(String[] args) {
