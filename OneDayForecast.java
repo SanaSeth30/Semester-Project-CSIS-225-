@@ -11,11 +11,11 @@ import javax.swing.border.*;
  */
 public class OneDayForecast extends JPanel {
 
-    public OneDayForecast() {
+    public OneDayForecast(String city) {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("One Day Forecast", JLabel.CENTER);
+        JLabel title = new JLabel("One Day Forecast - " + city, JLabel.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
@@ -27,7 +27,8 @@ public class OneDayForecast extends JPanel {
 
         table.add(makeHeaderRow());
 
-        DayData data = new DayData(ZonedDateTime.now(), "42.6526,-73.7562");
+        String coordinates = getCoordinates(city);
+        DayData data = new DayData(ZonedDateTime.now(), coordinates);
         data.populateData();
 
         for (int i = 0; i < 24; i++) {
@@ -58,7 +59,7 @@ public class OneDayForecast extends JPanel {
 
             precipPanel.add(icon, BorderLayout.CENTER);
             precipPanel.add(precip, BorderLayout.SOUTH);
-            table.add(precipPanel);
+            row.add(precipPanel);
 
             JLabel wind = new JLabel((int) data.getWindSpeed(i) + " mph", JLabel.CENTER);
             wind.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
@@ -106,13 +107,26 @@ public class OneDayForecast extends JPanel {
         return headerRow;
     }
 
-    /**
-     * Matches live weather data to one of the weather icon conditions.
-     * 
-     * @param data the weather data
-     * @param hour the hour of the day
-     * @return the matching weather condition string
-     */
+    private String getCoordinates(String city) {
+        if (city.equals("Albany")) {
+            return "42.6526,-73.7562";
+        } else if (city.equals("New York City")) {
+            return "40.7128,-74.0060";
+        } else if (city.equals("Buffalo")) {
+            return "42.8864,-78.8784";
+        } else if (city.equals("Yonkers")) {
+            return "40.9312,-73.8988";
+        } else if (city.equals("Rochester")) {
+            return "43.1566,-77.6088";
+        } else if (city.equals("Syracuse")) {
+            return "43.0481,-76.1474";
+        } else if (city.equals("New Rochelle")) {
+            return "40.9115,-73.7824";
+        }
+
+        return "42.6526,-73.7562";
+    }
+
     private String getWeatherCondition(DayData data, int hour) {
         String precipitationType = data.getPrecipitationType(hour);
         int precipitationProbability = data.getPrecipitationProbability(hour);
@@ -144,14 +158,5 @@ public class OneDayForecast extends JPanel {
         }
 
         return "sunny";
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("One Day Forecast");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 900);
-        frame.add(new OneDayForecast());
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }
