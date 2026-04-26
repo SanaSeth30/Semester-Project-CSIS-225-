@@ -5,7 +5,7 @@ import javax.swing.border.*;
 
 /**
  * This panel displays the five day forecast for a selected city.
- * It shows the day, low temperature, high temperature, and weather icon.
+ * It shows the day, temperature, wind speed, and weather icon.
  * 
  * @author Sana Seth
  * @version Spring 2026
@@ -24,7 +24,7 @@ public class FiveDayForecast extends JPanel {
      * Updates the five day forecast using the selected city's coordinates.
      * 
      * @param coordinates the latitude and longitude of the city
-     * @param city the selected city name
+     * @param city        the selected city name
      */
     public void updateData(String coordinates, String city) {
         removeAll();
@@ -44,39 +44,41 @@ public class FiveDayForecast extends JPanel {
 
         table.add(makeHeaderRow());
 
+        // get all five days of data in one API call
+        WeekData week = new WeekData(ZonedDateTime.now(), coordinates);
+        week.populateData();
+
         // create one row for each of the next five days
         for (int i = 0; i < 5; i++) {
-            ZonedDateTime date = ZonedDateTime.now().plusDays(i);
-
-            DayData day = new DayData(date, coordinates);
-            day.populateData();
 
             JPanel row = new JPanel(new GridLayout(1, 4, 5, 5));
             row.setBackground(Color.WHITE);
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             row.setPreferredSize(new Dimension(850, 120));
 
+            // get the day name
+            ZonedDateTime date = ZonedDateTime.now().plusDays(i);
             String dayName = date.getDayOfWeek().toString().substring(0, 3);
 
             JLabel dayLabel = new JLabel(dayName, JLabel.CENTER);
             dayLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(dayLabel);
 
-            JLabel lowLabel = new JLabel((int) day.getDailyLowestTemp() + "°F", JLabel.CENTER);
-            lowLabel.setForeground(new Color(0, 100, 180));
-            lowLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-            row.add(lowLabel);
+            JLabel tempLabel = new JLabel((int) week.getTemperature(i) + "°F", JLabel.CENTER);
+            tempLabel.setForeground(new Color(200, 80, 0));
+            tempLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+            row.add(tempLabel);
 
-            JLabel highLabel = new JLabel((int) day.getDailyHighestTemp() + "°F", JLabel.CENTER);
-            highLabel.setForeground(new Color(200, 80, 0));
-            highLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-            row.add(highLabel);
+            JLabel windLabel = new JLabel((int) week.getWindSpeed(i) + " mph", JLabel.CENTER);
+            windLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+            row.add(windLabel);
 
             JPanel precipPanel = new JPanel(new BorderLayout());
             precipPanel.setBackground(Color.WHITE);
             precipPanel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 
-            String condition = getWeatherCondition(day);
+            // choose icon based on the weather data for this day
+            String condition = getWeatherCondition(week, i);
             SmallWeatherIcon icon = new SmallWeatherIcon(condition);
 
             precipPanel.add(icon, BorderLayout.CENTER);
@@ -114,15 +116,15 @@ public class FiveDayForecast extends JPanel {
         dayHeader.setBorder(new LineBorder(Color.BLACK, 1));
         headerRow.add(dayHeader);
 
-        JLabel lowHeader = new JLabel("Low", JLabel.CENTER);
-        lowHeader.setFont(headerFont);
-        lowHeader.setBorder(new LineBorder(Color.BLACK, 1));
-        headerRow.add(lowHeader);
+        JLabel tempHeader = new JLabel("Temp", JLabel.CENTER);
+        tempHeader.setFont(headerFont);
+        tempHeader.setBorder(new LineBorder(Color.BLACK, 1));
+        headerRow.add(tempHeader);
 
-        JLabel highHeader = new JLabel("High", JLabel.CENTER);
-        highHeader.setFont(headerFont);
-        highHeader.setBorder(new LineBorder(Color.BLACK, 1));
-        headerRow.add(highHeader);
+        JLabel windHeader = new JLabel("Wind", JLabel.CENTER);
+        windHeader.setFont(headerFont);
+        windHeader.setBorder(new LineBorder(Color.BLACK, 1));
+        headerRow.add(windHeader);
 
         JLabel precipHeader = new JLabel("Precip", JLabel.CENTER);
         precipHeader.setFont(headerFont);
@@ -133,16 +135,17 @@ public class FiveDayForecast extends JPanel {
     }
 
     /**
-     * Chooses the weather icon based on midday weather data.
+     * Chooses the weather icon based on the daily weather data.
      * 
-     * @param data the weather data for one day
+     * @param data the weather data for the week
+     * @param day  the index of the day
      * @return the matching weather condition
      */
-    private String getWeatherCondition(DayData data) {
-        int precip = data.getPrecipitationProbability(12);
-        String type = data.getPrecipitationType(12);
-        double cloud = data.getCloudCoverPercentage(12);
-        double wind = data.getWindSpeed(12);
+    private String getWeatherCondition(WeekData data, int day) {
+        int precip = data.getPrecipitationProbability(day);
+        String type = data.getPrecipitationType(day);
+        double cloud = data.getCloudCoverPercentage(day);
+        double wind = data.getWindSpeed(day);
 
         if (precip >= 40) {
             if (type.equals("rain")) {
