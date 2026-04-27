@@ -8,7 +8,7 @@ import javax.swing.border.*;
  * It builds a scrollable table showing:
  * time, temperature, weather icon, and wind speed.
  * 
- * @author Sana Seth, Lucas Davey (implemented UV message)
+ * @author Sana Seth, Lucas Davey (Only implemented UV message & nighttime icon)
  * @version Spring 2026
  */
 public class OneDayForecast extends JPanel {
@@ -92,10 +92,13 @@ public class OneDayForecast extends JPanel {
             SmallWeatherIcon icon = new SmallWeatherIcon(condition);
             precipPanel.add(icon, BorderLayout.CENTER);
 
-            // gets the UV and prints a message below the weather icons 
+            // gets the UV and prints a message below the weather icons
             int uv = data.getUvIndex(i);
             String message = "";
-            if (uv <= 2) {
+            if(uv == 0){
+                message = "UV " + uv + ": Conditions are safe.";
+            }
+            else if (uv <= 2) {
                 message = "UV " + uv + ": Safe sun conditions. Enjoy the outdoors!";
             } else if (uv <= 5) {
                 message = "UV " + uv + ": Consider wearing sunscreen.";
@@ -107,7 +110,7 @@ public class OneDayForecast extends JPanel {
 
             JLabel uvMessage = new JLabel(message, JLabel.CENTER);
             uvMessage.setFont(new Font("Georgia", Font.PLAIN, 10));
-            precipPanel.add(uvMessage, BorderLayout.SOUTH); 
+            precipPanel.add(uvMessage, BorderLayout.SOUTH);
 
             row.add(precipPanel);
 
@@ -198,6 +201,11 @@ public class OneDayForecast extends JPanel {
         double cloudCover = data.getCloudCoverPercentage(hour);
         double windSpeed = data.getWindSpeed(hour);
 
+        //puts the nightime icon from 9pm at night to 5am the in morning
+        if (hour < 6 || hour >= 20) {
+            return "night";
+        }
+
         if (precipitationProbability >= 40) {
             if (precipitationType.equals("rain")) {
                 return "rainy";
@@ -218,6 +226,7 @@ public class OneDayForecast extends JPanel {
             return "partly cloudy";
 
         return "sunny";
+
     }
 
     /**
