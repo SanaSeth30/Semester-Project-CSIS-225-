@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -68,7 +69,7 @@ public class WeekData implements WeatherData {
                     + "&endTime=" + endTime
                     + "&apikey=" + apiKey;
 
-            URL apiUrl = new URL(urlString);
+            URL apiUrl = URI.create(urlString).toURL();
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
             connection.setRequestMethod("GET");
 
