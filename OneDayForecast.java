@@ -8,7 +8,7 @@ import javax.swing.border.*;
  * It builds a scrollable table showing:
  * time, temperature, weather icon, and wind speed.
  * 
- * @author Sana Seth
+ * @author Sana Seth, Lucas Davey (implemented UV message)
  * @version Spring 2026
  */
 public class OneDayForecast extends JPanel {
@@ -65,7 +65,7 @@ public class OneDayForecast extends JPanel {
 
             // each row = one hour
             JPanel row = new JPanel(new GridLayout(1, 4, 5, 5));
-            row.setBackground(new Color(173,216,230));
+            row.setBackground(new Color(173, 216, 230));
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             row.setPreferredSize(new Dimension(850, 120));
 
@@ -91,6 +91,23 @@ public class OneDayForecast extends JPanel {
             // create and add icon
             SmallWeatherIcon icon = new SmallWeatherIcon(condition);
             precipPanel.add(icon, BorderLayout.CENTER);
+
+            // gets the UV and prints a message below the weather icons 
+            int uv = data.getUvIndex(i);
+            String message = "";
+            if (uv <= 2) {
+                message = "UV " + uv + ": Safe sun conditions. Enjoy the outdoors!";
+            } else if (uv <= 5) {
+                message = "UV " + uv + ": Consider wearing sunscreen.";
+            } else if (uv <= 7) {
+                message = "UV " + uv + ": Wear sunscreen & limit time spent in sun.";
+            } else if (uv <= 10) {
+                message = "UV " + uv + ": Stay indoors, avoid sun exposure";
+            }
+
+            JLabel uvMessage = new JLabel(message, JLabel.CENTER);
+            uvMessage.setFont(new Font("Georgia", Font.PLAIN, 10));
+            precipPanel.add(uvMessage, BorderLayout.SOUTH); 
 
             row.add(precipPanel);
 
