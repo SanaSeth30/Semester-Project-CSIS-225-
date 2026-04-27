@@ -28,7 +28,7 @@ public class WeatherHomePage extends JFrame {
 
         setTitle("Weather Home Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 700);
+        setSize(1600, 1600);
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
