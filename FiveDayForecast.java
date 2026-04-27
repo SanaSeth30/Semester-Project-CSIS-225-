@@ -33,7 +33,7 @@ public class FiveDayForecast extends JPanel {
         setBackground(Color.WHITE);
 
         JLabel title = new JLabel("Five Day Forecast - " + city, JLabel.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setFont(new Font("Georgia", Font.BOLD, 30));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
 
@@ -52,7 +52,7 @@ public class FiveDayForecast extends JPanel {
         for (int i = 0; i < 5; i++) {
 
             JPanel row = new JPanel(new GridLayout(1, 4, 5, 5));
-            row.setBackground(Color.WHITE);
+           row.setBackground(new Color(173,216,230));
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             row.setPreferredSize(new Dimension(850, 120));
 
@@ -105,11 +105,11 @@ public class FiveDayForecast extends JPanel {
      */
     private JPanel makeHeaderRow() {
         JPanel headerRow = new JPanel(new GridLayout(1, 4, 5, 5));
-        headerRow.setBackground(Color.WHITE);
+        headerRow.setBackground(Color.pink);
         headerRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         headerRow.setPreferredSize(new Dimension(850, 40));
 
-        Font headerFont = new Font("Arial", Font.BOLD, 13);
+        Font headerFont = new Font("Georgia", Font.BOLD, 30);
 
         JLabel dayHeader = new JLabel("Day", JLabel.CENTER);
         dayHeader.setFont(headerFont);

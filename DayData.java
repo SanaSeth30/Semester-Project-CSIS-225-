@@ -48,7 +48,7 @@ public class DayData implements WeatherData {
      */
     @Override
     public void populateData() {
-        String apiKey = "JPNyTSLdw7EZQ5nnsWlSgzPLgcSeOIKo";
+        String apiKey = "38cPMVhzqJ121KgKhBXFNQMwQlnHLLOh";
         ZonedDateTime start = day.withHour(0).withMinute(0).withSecond(0).withNano(0);
         ZonedDateTime end = start.plusHours(23);
 
