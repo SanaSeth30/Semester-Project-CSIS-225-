@@ -26,14 +26,11 @@ public class test {
                 today.getPrecipitationType(0) + "at 1am with a probability of " + today.getPrecipitationProbability(0)
                         + "%" + " and a cloud coverage of " + today.getCloudCoverPercentage(0) + "%");
         System.out.println("The daily high tempature is " + today.getDailyHighestTemp() + " and the low is "
-                + today.getDailyLowestTemp());
+                + today.getDailyLowestTemp() + " and the UV index is " + today.getUvIndex(12));
         System.out.println(
                 today.getWindSpeed(0) + "mph is the wind speed, " + today.getHumitity(0)
              + "% is the humidity");
 
-        WeekData todayOn = new WeekData(ZonedDateTime.now(),"43.2994,-74.2179");
-        todayOn.populateData();
-        System.out.println(todayOn.getTemperature(0)+" is the tempature for today and "+ todayOn.getTemperature(1)+ " is tomorrows");
     }
 
 }

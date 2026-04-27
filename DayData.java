@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Implementation of WeatherData that fetches and stores daily weather metrics.
+ * 
  * @author Patrick McFee
  * @version Spring 2026
  */
@@ -29,17 +31,20 @@ public class DayData implements WeatherData {
     private ArrayList<Double> hourlyCloudCoverPrecentage;
     /** Hourly humidity percentages. */
     private ArrayList<Integer> hourlyHumidity;
+    /** Hourly UV Index */
+    private ArrayList<Integer> hourlyUVIndex;
     /** Coordinates of location */
     private String coordinates;
 
     public DayData(ZonedDateTime day, String coordinates) {
         this.day = day;
-        hourlyPrecipitation = new ArrayList<Integer>();
-        hourlyTemps = new ArrayList<Double>();
-        hourlyWindSpeed = new ArrayList<Double>();
-        hourlyPrecipitaitonProbability = new ArrayList<Integer>();
-        hourlyCloudCoverPrecentage = new ArrayList<Double>();
-        hourlyHumidity = new ArrayList<Integer>();
+        this.hourlyPrecipitation = new ArrayList<Integer>();
+        this.hourlyTemps = new ArrayList<Double>();
+        this.hourlyWindSpeed = new ArrayList<Double>();
+        this.hourlyPrecipitaitonProbability = new ArrayList<Integer>();
+        this.hourlyCloudCoverPrecentage = new ArrayList<Double>();
+        this.hourlyHumidity = new ArrayList<Integer>();
+        this.hourlyUVIndex = new ArrayList<Integer>();
         this.coordinates = coordinates;
     }
 
@@ -48,26 +53,27 @@ public class DayData implements WeatherData {
      */
     @Override
     public void populateData() {
-        String apiKey = "JPNyTSLdw7EZQ5nnsWlSgzPLgcSeOIKo";
+        String apiKey = "iQktMBZobsKfGHYEE9VEPgNm8KkR5imS";
         ZonedDateTime start = day.withHour(0).withMinute(0).withSecond(0).withNano(0);
         ZonedDateTime end = start.plusHours(23);
 
-        String[] searchKeys = {"temperature", "windSpeed", "precipitationType", "precipitationProbability", "cloudCover", "humidity"};
+        String[] searchKeys = { "temperature", "windSpeed", "precipitationType", "precipitationProbability",
+                "cloudCover", "humidity", "uvIndex" };
 
         try {
             String startTime = URLEncoder.encode(start.toInstant().toString(), StandardCharsets.UTF_8);
             String endTime = URLEncoder.encode(end.toInstant().toString(), StandardCharsets.UTF_8);
 
             String urlString = "https://api.tomorrow.io/v4/timelines?"
-                    + "location="+coordinates
-                    + "&fields=temperature,windSpeed,precipitationType,precipitationProbability,cloudCover,humidity"
+                    + "location=" + coordinates
+                    + "&fields=temperature,windSpeed,precipitationType,precipitationProbability,cloudCover,humidity,uvIndex"
                     + "&units=imperial"
                     + "&timesteps=1h"
                     + "&startTime=" + startTime
                     + "&endTime=" + endTime
                     + "&apikey=" + apiKey;
 
-            URL apiUrl = new URL(urlString);
+            URL apiUrl = URI.create(urlString).toURL();
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
             connection.setRequestMethod("GET");
 
@@ -82,7 +88,7 @@ public class DayData implements WeatherData {
 
                 String fullJson = responseBuilder.toString();
 
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
                     String searchKey = "\"" + searchKeys[i] + "\":";
                     int lastIdx = 0;
 
@@ -94,7 +100,6 @@ public class DayData implements WeatherData {
                         }
 
                         String tempStr = fullJson.substring(startVal, endVal).trim();
-
                         if (i == 0) {
                             hourlyTemps.add(Double.parseDouble(tempStr));
                         } else if (i == 1) {
@@ -107,6 +112,8 @@ public class DayData implements WeatherData {
                             hourlyCloudCoverPrecentage.add(Double.parseDouble(tempStr));
                         } else if (i == 5) {
                             hourlyHumidity.add(Integer.parseInt(tempStr));
+                        } else if (i == 6) {
+                            hourlyUVIndex.add(Integer.parseInt(tempStr));
                         }
                         lastIdx = endVal;
                     }
@@ -124,35 +131,37 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the high tempature for the day
+     * 
      * @return the high tempature for the day
      */
-    public double getDailyHighestTemp(){
+    public double getDailyHighestTemp() {
         double high = hourlyTemps.get(0);
-        for(int i=1;i<24;i++){
-            if(high<hourlyTemps.get(i)){
+        for (int i = 1; i < 24; i++) {
+            if (high < hourlyTemps.get(i)) {
                 high = hourlyTemps.get(i);
             }
         }
         return high;
     }
 
-
     /**
      * Retrieves the low tempature for the day
      * 
      * @return The low tempature for the day
      */
-    public double getDailyLowestTemp(){
+    public double getDailyLowestTemp() {
         double low = hourlyTemps.get(0);
-        for(int i=1;i<24;i++){
-            if(low>hourlyTemps.get(i)){
+        for (int i = 1; i < 24; i++) {
+            if (low > hourlyTemps.get(i)) {
                 low = hourlyTemps.get(i);
             }
         }
         return low;
     }
+
     /**
      * Retrieves the temperature at a specific time of day.
+     * 
      * @param hour The hour of the day.
      * @return The temperature as a double.
      */
@@ -163,6 +172,7 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the wind speed at the specified time.
+     * 
      * @param hour The hour of the day.
      * @return Wind speed in miles per hour.
      */
@@ -173,6 +183,7 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the type of precipitation occurring at the specified time.
+     * 
      * @param hour The hour of the day.
      * @return A string representing the precipitation type.
      */
@@ -194,6 +205,7 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the probability of precipitation at the specified time.
+     * 
      * @param hour The hour of the day.
      * @return The percentage chance of precipitation (0-100).
      */
@@ -204,6 +216,7 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the percentage of cloud cover at the specified time.
+     * 
      * @param hour The hour of the day.
      * @return The cloud cover percentage (0-100).
      */
@@ -214,11 +227,24 @@ public class DayData implements WeatherData {
 
     /**
      * Retrieves the humidity percentage at the specified time.
+     * 
      * @param hour The hour of the day.
      * @return The humidity percentage (0-100).
      */
     @Override
     public int getHumitity(int hour) {
         return hourlyHumidity.get(hour);
+    }
+
+
+    /**
+     * Retrieves the UV index at the specified time.
+     * 
+     * @param hour The hour of the day
+     * @return The uv index 
+     * 
+     */
+    public int getUvIndex(int hour){
+        return hourlyUVIndex.get(hour);
     }
 }
