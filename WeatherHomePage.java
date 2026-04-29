@@ -1,106 +1,221 @@
 import java.awt.*;
+import java.time.ZonedDateTime;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 /**
- * This is the main home page for the weather app.
- * It lets the user pick a city and then shows:
- * one day forecast
- * -five day forecast
+ * This class represents the main Weather Home Page GUI.
+ * It allows users to:
+ * Select a city
+ * View a 1-day forecast
+ * View a 5-day forecast
+ * See weather safety tips
+ * See a daily motivational quote
  *
- * The panels update automatically when the city changes.
  *
- * @author Sanju Arikatla
+ * @author Sanju
  * @version Spring 2026
  */
-
 public class WeatherHomePage extends JFrame {
 
+    // dropdown for selecting city
     private JComboBox<String> cityDropdown;
+
+    // split pane holding 1-day and 5-day forecast
     private JSplitPane splitPane;
 
-    // these are the two main panels on the screen
+    // forecast panels
     private OneDayForecast oneDayPanel;
     private FiveDayForecast fiveDayPanel;
 
+    // bottom section
+    private JPanel bottomPanel;
+    // safety tip UI components
+    private JPanel safetyPanel;
+    private JLabel safetyLabel;
+    // quote UI components
+    private JPanel quotePanel;
+    private JLabel quoteLabel;
+
+    /**
+     * Constructor builds the entire Weather Home Page UI.
+     * Initializes all panels and loads default city data.
+     */
     public WeatherHomePage() {
 
+        // window setup
         setTitle("Weather Home Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1600, 1600);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         // TOP PANEL CITY SELECTOR
         JPanel topPanel = new JPanel();
         topPanel.setBorder(new TitledBorder(new LineBorder(Color.GRAY), "Select City"));
 
-        // list of cities user can choose from
-        String[] cities = { "Albany", "New York City", "Buffalo", "Yonkers", "Rochester", "Syracuse", "New Rochelle" };
+        String[] cities = {
+                "Albany", "New York City", "Buffalo",
+                "Yonkers", "Rochester", "Syracuse", "New Rochelle"
+        };
 
-        // dropdown menu for cities
         cityDropdown = new JComboBox<>(cities);
 
-        // whenever user picks a new city, refresh the weather panels
+        // get the currently selected city (default value)
+        String city = (String) cityDropdown.getSelectedItem();
+
+        // update UI whenever city changes
         cityDropdown.addActionListener(new java.awt.event.ActionListener() {
-            @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 refreshPanels();
             }
         });
+
         topPanel.add(cityDropdown);
         add(topPanel, BorderLayout.NORTH);
 
-        // INITIAL WEATHER PANELS
-        // get the default selected city when program starts
-        String city = (String) cityDropdown.getSelectedItem();
-
-        // create both forecast panels
+        // create 1-day forecast
         oneDayPanel = new OneDayForecast(city);
 
+        // get coordinates for API
         String coordinates = getCoordinates(city);
+
+        // create 5-day forecast and load data
         fiveDayPanel = new FiveDayForecast();
         fiveDayPanel.updateData(coordinates, city);
 
-        // split screen left is the 1 day and the right is the 5 day
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, oneDayPanel, fiveDayPanel);
         splitPane.setDividerLocation(450);
-
         add(splitPane, BorderLayout.CENTER);
-    }
 
+        // BOTTOM PANEL SAFETY + QUOTE
+        bottomPanel = new JPanel(new GridLayout(1, 2));
+        bottomPanel.setBackground(Color.WHITE);
+
+        // SAFETY PANEL
+        safetyPanel = new JPanel();
+        safetyPanel.setBorder(new TitledBorder(new LineBorder(Color.GRAY), " Safety Tips"));
+
+        safetyLabel = new JLabel("Loading safety tips...", JLabel.CENTER);
+        safetyLabel.setFont(new Font("Georgia", Font.PLAIN, 14));
+
+        safetyPanel.add(safetyLabel);
+
+        // QUOTE PANEL
+        quotePanel = new JPanel();
+        quotePanel.setBorder(new TitledBorder(new LineBorder(Color.GRAY), "Daily Quote"));
+
+        quoteLabel = new JLabel("Loading quote...", JLabel.CENTER);
+        quoteLabel.setFont(new Font("Georgia", Font.PLAIN, 14));
+
+        quotePanel.add(quoteLabel);
+
+        bottomPanel.add(safetyPanel);
+        bottomPanel.add(quotePanel);
+
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        // initial bottom updates
+        updateSafetyTip(city);
+        updateQuote();
+    }
     /**
-     * This method runs every time the user changes the city.
+     * Refreshes both forecast panels when a new city is selected.
      */
     private void refreshPanels() {
 
-        // get newly selected city
         String city = (String) cityDropdown.getSelectedItem();
 
-        // recreate panels with updated city info
+        // rebuild 1-day forecast
         oneDayPanel = new OneDayForecast(city);
 
-        // update Five Day
+        // rebuild 5-day forecast
         String coordinates = getCoordinates(city);
-
         fiveDayPanel = new FiveDayForecast();
         fiveDayPanel.updateData(coordinates, city);
 
-        // replace panels in the split view
+        // update split pane components
         splitPane.setLeftComponent(oneDayPanel);
         splitPane.setRightComponent(fiveDayPanel);
 
-        // refresh UI so changes actually show up
         splitPane.revalidate();
         splitPane.repaint();
+
+        updateSafetyTip(city);
+        updateQuote();
     }
 
     /**
-     * Converts a city name into coordinates for the API
+     * Generates a weather safety tip 
+     */
+    private void updateSafetyTip(String city) {
+
+        try {
+            String coordinates = getCoordinates(city);
+
+            DayData data = new DayData(ZonedDateTime.now(), coordinates);
+            data.populateData();
+
+            double temp = data.getTemperature(12);
+            String precip = data.getPrecipitationType(12);
+
+            String tip;
+
+            if (temp <= 32) {
+                tip = "Cold weather: Wear gloves and stay warm.";
+            }
+            else {
+                if (temp >= 90) {
+                    tip = "Hot weather: Drink water and avoid going outside too long.";
+                }
+                else {
+                    if (precip.equals("rain")) {
+                        tip = "Rainy weather: Drive carefully.";
+                    }
+                    else {
+                        if (precip.equals("snow")) {
+                            tip = "Snowy weather: Wear warm clothes and be careful outside.";
+                        }
+                        else {
+                            tip = "Weather is nice. Have a great day!";
+                        }
+                    }
+                }
+            }
+
+            safetyLabel.setText(tip);
+
+        } catch (Exception e) {
+            safetyLabel.setText("Safety tips unavailable.");
+        }
+    }
+
+    /**
+     * Displays a random motivational weather related quote.
+     */
+    private void updateQuote() {
+
+      String[] quotes = {
+    "Stay positive every day.",
+    "A new forecast brings new chances.",
+    "Prepare, don’t panic!",
+    "Weather changes, so can your day.",
+    "Every day is a fresh start.",
+    "Storms don’t last forever.",
+    "Make today count."
+};
+
+        int index = (int) (Math.random() * quotes.length);
+        quoteLabel.setText(quotes[index]);
+    }
+
+    /**
+     * Converts city names into latitude/longitude coordinates.
+     * Used for API requests.
      */
     private String getCoordinates(String city) {
+
         if (city.equals("Albany"))
             return "42.6526,-73.7562";
         if (city.equals("New York City"))
@@ -119,9 +234,10 @@ public class WeatherHomePage extends JFrame {
         return "42.6526,-73.7562";
     }
 
-    // MAIN METHOD
+    /**
+     * Main method used to launch the Weather Home Page application.
+     */
     public static void main(String[] args) {
-        WeatherHomePage page = new WeatherHomePage();
-        page.setVisible(true);
+        new WeatherHomePage().setVisible(true);
     }
 }

@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 /**
@@ -13,7 +12,7 @@ public class SmallWeatherIcon extends JPanel {
         setLayout(new GridBagLayout());
         setBackground(Color.WHITE);
         WeatherIcon icon = new WeatherIcon(condition);
-        icon.setPreferredSize(new Dimension(60,60));
+        icon.setPreferredSize(new Dimension(80,80));
         icon.startAnimation();
         add(icon);
     }
@@ -22,7 +21,7 @@ public class SmallWeatherIcon extends JPanel {
         JFrame frame = new JFrame("Test Icon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 250);
-        frame.add(new SmallWeatherIcon("rainy"));
+        frame.add(new SmallWeatherIcon("night"));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

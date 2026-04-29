@@ -5,7 +5,7 @@ import javax.swing.border.*;
 
 /**
  * This panel displays the five day forecast for a selected city.
- * It shows the day, temperature, wind speed, and weather icon.
+ * It shows the day, temperature, weather icon, and wind speed.
  * 
  * @author Sana Seth
  * @version Spring 2026
@@ -17,7 +17,7 @@ public class FiveDayForecast extends JPanel {
      */
     public FiveDayForecast() {
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
+        setBackground(new Color(240, 230, 255)); // soft lavender
     }
 
     /**
@@ -36,10 +36,13 @@ public class FiveDayForecast extends JPanel {
         title.setFont(new Font("Georgia", Font.BOLD, 30));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
+        title.setForeground(new Color(80, 0, 120)); // deep purple text
+        title.setOpaque(true);
+        title.setBackground(new Color(240, 230, 255)); // soft lavender
 
         JPanel table = new JPanel();
         table.setLayout(new BoxLayout(table, BoxLayout.Y_AXIS));
-        table.setBackground(Color.WHITE);
+        table.setBackground(new Color(240, 230, 255));
         table.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         table.add(makeHeaderRow());
@@ -52,7 +55,7 @@ public class FiveDayForecast extends JPanel {
         for (int i = 0; i < 5; i++) {
 
             JPanel row = new JPanel(new GridLayout(1, 4, 5, 5));
-           row.setBackground(new Color(173,216,230));
+            row.setBackground(new Color(173, 216, 230));
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             row.setPreferredSize(new Dimension(850, 120));
 
@@ -61,17 +64,15 @@ public class FiveDayForecast extends JPanel {
             String dayName = date.getDayOfWeek().toString().substring(0, 3);
 
             JLabel dayLabel = new JLabel(dayName, JLabel.CENTER);
+            dayLabel.setFont(new Font("Georgia", Font.PLAIN, 20));
             dayLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(dayLabel);
 
             JLabel tempLabel = new JLabel((int) week.getTemperature(i) + "°F", JLabel.CENTER);
-            tempLabel.setForeground(new Color(200, 80, 0));
+            tempLabel.setFont(new Font("Georgia", Font.PLAIN, 20));
+            tempLabel.setForeground(new Color(200, 0, 50));
             tempLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(tempLabel);
-
-            JLabel windLabel = new JLabel((int) week.getWindSpeed(i) + " mph", JLabel.CENTER);
-            windLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-            row.add(windLabel);
 
             JPanel precipPanel = new JPanel(new BorderLayout());
             precipPanel.setBackground(Color.WHITE);
@@ -83,6 +84,11 @@ public class FiveDayForecast extends JPanel {
 
             precipPanel.add(icon, BorderLayout.CENTER);
             row.add(precipPanel);
+
+            JLabel windLabel = new JLabel((int) week.getWindSpeed(i) + " mph", JLabel.CENTER);
+            windLabel.setFont(new Font("Georgia", Font.PLAIN, 20));
+            windLabel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+            row.add(windLabel);
 
             table.add(row);
             table.add(Box.createVerticalStrut(8));
@@ -105,7 +111,7 @@ public class FiveDayForecast extends JPanel {
      */
     private JPanel makeHeaderRow() {
         JPanel headerRow = new JPanel(new GridLayout(1, 4, 5, 5));
-        headerRow.setBackground(Color.pink);
+        headerRow.setBackground(new Color(230, 210, 255));
         headerRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         headerRow.setPreferredSize(new Dimension(850, 40));
 
@@ -121,15 +127,15 @@ public class FiveDayForecast extends JPanel {
         tempHeader.setBorder(new LineBorder(Color.BLACK, 1));
         headerRow.add(tempHeader);
 
-        JLabel windHeader = new JLabel("Wind", JLabel.CENTER);
-        windHeader.setFont(headerFont);
-        windHeader.setBorder(new LineBorder(Color.BLACK, 1));
-        headerRow.add(windHeader);
-
         JLabel precipHeader = new JLabel("Precip", JLabel.CENTER);
         precipHeader.setFont(headerFont);
         precipHeader.setBorder(new LineBorder(Color.BLACK, 1));
         headerRow.add(precipHeader);
+
+        JLabel windHeader = new JLabel("Wind", JLabel.CENTER);
+        windHeader.setFont(headerFont);
+        windHeader.setBorder(new LineBorder(Color.BLACK, 1));
+        headerRow.add(windHeader);
 
         return headerRow;
     }

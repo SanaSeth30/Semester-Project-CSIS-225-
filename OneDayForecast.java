@@ -8,7 +8,7 @@ import javax.swing.border.*;
  * It builds a scrollable table showing:
  * time, temperature, weather icon, and wind speed.
  * 
- * @author Sana Seth
+ * @author Sana Seth, Lucas Davey (Only implemented UV message & nighttime icon)
  * @version Spring 2026
  */
 public class OneDayForecast extends JPanel {
@@ -18,7 +18,7 @@ public class OneDayForecast extends JPanel {
      */
     public OneDayForecast() {
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
+        setBackground(new Color(240, 230, 255)); // soft lavender
     }
 
     /**
@@ -45,11 +45,14 @@ public class OneDayForecast extends JPanel {
         title.setFont(new Font("Georgia", Font.BOLD, 30));
         title.setBorder(new EmptyBorder(10, 0, 10, 0));
         add(title, BorderLayout.NORTH);
+        title.setForeground(new Color(80, 0, 120)); // deep purple text
+        title.setOpaque(true);
+        title.setBackground(new Color(240, 230, 255)); // lavender
 
         // container that will hold all rows vertically
         JPanel table = new JPanel();
         table.setLayout(new BoxLayout(table, BoxLayout.Y_AXIS));
-        table.setBackground(Color.WHITE);
+        table.setBackground(new Color(240, 230, 255));
         table.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // add column headers
@@ -65,18 +68,20 @@ public class OneDayForecast extends JPanel {
 
             // each row = one hour
             JPanel row = new JPanel(new GridLayout(1, 4, 5, 5));
-            row.setBackground(new Color(173,216,230));
+            row.setBackground(new Color(173, 216, 230)); //light blue
             row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             row.setPreferredSize(new Dimension(850, 120));
 
             // TIME COLUMN
             JLabel time = new JLabel(String.format("%02d:00", i), JLabel.CENTER);
+            time.setFont(new Font("Georgia", Font.PLAIN, 20));
             time.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(time);
 
             // TEMPERATURE COLUMN
             JLabel temp = new JLabel((int) data.getTemperature(i) + "°F", JLabel.CENTER);
-            temp.setForeground(new Color(200, 80, 0)); // orange for warmth
+            temp.setFont(new Font("Georgia", Font.PLAIN, 20));
+            temp.setForeground(new Color(200, 0, 50));
             temp.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(temp);
 
@@ -92,10 +97,32 @@ public class OneDayForecast extends JPanel {
             SmallWeatherIcon icon = new SmallWeatherIcon(condition);
             precipPanel.add(icon, BorderLayout.CENTER);
 
+            // gets the UV and prints a message below the weather icons
+            int uv = data.getUvIndex(i);
+            String message = "";
+            if(uv == 0){
+                message = "UV " + uv + ": Conditions are safe.";
+            }
+            else if (uv <= 2) {
+                message = "UV " + uv + ": Safe sun conditions. Enjoy the outdoors!";
+            } else if (uv <= 5) {
+                message = "UV " + uv + ": Consider wearing sunscreen.";
+            } else if (uv <= 7) {
+                message = "UV " + uv + ": Wear sunscreen & limit time spent in sun.";
+            } else if (uv <= 10) {
+                message = "UV " + uv + ": Stay indoors, avoid sun exposure";
+            }
+
+            JLabel uvMessage = new JLabel(message, JLabel.CENTER);
+            uvMessage.setFont(new Font("Georgia", Font.PLAIN, 10));
+            uvMessage.setBorder(new EmptyBorder(0, 0, 5, 0)); // raise message up
+            precipPanel.add(uvMessage, BorderLayout.SOUTH);
+
             row.add(precipPanel);
 
             // WIND COLUMN
             JLabel wind = new JLabel((int) data.getWindSpeed(i) + " mph", JLabel.CENTER);
+            wind.setFont(new Font("Georgia", Font.PLAIN, 20));
             wind.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
             row.add(wind);
 
@@ -121,7 +148,7 @@ public class OneDayForecast extends JPanel {
      */
     private JPanel makeHeaderRow() {
         JPanel headerRow = new JPanel(new GridLayout(1, 4, 5, 5));
-        headerRow.setBackground(Color.pink);
+        headerRow.setBackground(new Color(230, 210, 255));
         headerRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         headerRow.setPreferredSize(new Dimension(850, 40));
 
@@ -146,6 +173,8 @@ public class OneDayForecast extends JPanel {
         windHeader.setFont(headerFont);
         windHeader.setBorder(new LineBorder(Color.BLACK, 1));
         headerRow.add(windHeader);
+
+
 
         return headerRow;
     }
@@ -181,6 +210,11 @@ public class OneDayForecast extends JPanel {
         double cloudCover = data.getCloudCoverPercentage(hour);
         double windSpeed = data.getWindSpeed(hour);
 
+        //puts the nightime icon from 9pm at night to 5am the in morning
+        if (hour < 6 || hour >= 20) {
+            return "night";
+        }
+
         if (precipitationProbability >= 40) {
             if (precipitationType.equals("rain")) {
                 return "rainy";
@@ -201,6 +235,7 @@ public class OneDayForecast extends JPanel {
             return "partly cloudy";
 
         return "sunny";
+
     }
 
     /**

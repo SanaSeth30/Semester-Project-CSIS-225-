@@ -143,6 +143,8 @@ public class WeatherIcon extends JPanel {
             thunderstorm(g, w, h);
         } else if (condition.equals("windy")) {
             windyDay(g, w, h);
+        } else if (condition.equals("night")) {
+            nightTime(g, w, h);
         }
 
     }
@@ -151,6 +153,8 @@ public class WeatherIcon extends JPanel {
      * draws sunny icon
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void sunnyDay(Graphics g, int w, int h) {
         g.setColor(Color.YELLOW);
@@ -214,6 +218,8 @@ public class WeatherIcon extends JPanel {
      * draws partly cloudy icon with moving clouds
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void partlyCloudy(Graphics g, int w, int h) {
         g.setColor(Color.YELLOW);
@@ -264,6 +270,8 @@ public class WeatherIcon extends JPanel {
      * draws cloudy weather with moving clouds
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void cloudyDay(Graphics g, int w, int h) {
         g.setColor(CLOUD_GRAY);
@@ -283,6 +291,8 @@ public class WeatherIcon extends JPanel {
      * draws rain condition with cloud
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void rainyDay(Graphics g, int w, int h) {
         // cloud
@@ -310,6 +320,8 @@ public class WeatherIcon extends JPanel {
      * creates thunderstorm with lightning bolt flashing and cloud
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void thunderstorm(Graphics g, int w, int h) {
         // cloud
@@ -341,6 +353,8 @@ public class WeatherIcon extends JPanel {
      * draws cloud and has swooshed lines going across screen
      * 
      * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
      */
     private void windyDay(Graphics g, int w, int h) {
         // cloud
@@ -363,6 +377,27 @@ public class WeatherIcon extends JPanel {
         // third swoosh slightly behind
         g.drawLine((100 + windMove) * w / 300, 185 * h / 300, (160 + windMove) * w / 300, 185 * h / 300);
         g.drawArc((160 + windMove) * w / 300, 175 * h / 300, 40 * w / 300, 20 * h / 300, 0, 180);
+    }
+
+    /**
+     * draws a crescent moon for nighttime icon
+     * 
+     * @param g the graphic used for drawing
+     * @param w the width of the area the icon is in
+     * @param h the height of the area the icon is in
+     */
+    private void nightTime(Graphics g, int w, int h) {
+        // black night time background
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, w, h);
+
+        Color gold = new Color(255, 230, 150); //crated a yellow/goldish color for the moon
+        g.setColor(gold);
+        g.fillOval(120 * w / 300, 110 * h / 300, 115 * w / 300, 115 * w / 300);
+
+        // circle that helps create crescent
+        g.setColor(Color.BLACK);
+        g.fillOval((120 * w / 300) + 15 * w / 300, 110 * h / 300, 115 * w / 300, 115 * w / 300);
     }
 
 }
