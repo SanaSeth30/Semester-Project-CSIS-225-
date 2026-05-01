@@ -51,7 +51,10 @@ public class WeekData implements WeatherData {
      */
     @Override
     public void populateData() {
-        String apiKey = "38cPMVhzqJ121KgKhBXFNQMwQlnHLLOh";
+        String apiKey = "4IcNbFln9ybrIk8Zatzg0rKL9Wk5wErT";
+        //iQktMBZobsKfGHYEE9VEPgNm8KkR5imS
+        //38cPMVhzqJ121KgKhBXFNQMwQlnHLLOh
+        //4IcNbFln9ybrIk8Zatzg0rKL9Wk5wErT
         ZonedDateTime start = day;
         ZonedDateTime end = start.plusDays(5);
 
